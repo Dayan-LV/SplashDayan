@@ -77,6 +77,10 @@ class Login : AppCompatActivity() {
             for (myInfo in list) {
                 if (myInfo.usuario == usr && myInfo.password == pswd) {
                     val intent = Intent(this@Login, Menu::class.java)
+                    intent.putExtra(
+                        "usuario",
+                        "Bienvenid@ $usuario"
+                    )
                     startActivity(intent)
                     i = 1
                 }
