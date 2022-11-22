@@ -14,10 +14,18 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".ListView"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ForgotPassword"
             android:exported="false" />
         <activity
             android:name=".Menu"
+            android:theme="@style/Theme.SplashDayan"
             android:exported="false" />
         <activity
             android:name=".Login"

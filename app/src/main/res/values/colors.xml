@@ -9,6 +9,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white_alpha">#9AFFFFFF</color>
 
+    <color name="DarkBlue">#1c313a</color>
+    <color name="LightGrey">#eeeeee</color>
+
     <color name="gradient_principal">#195b7b</color>
     <color name="gradient_secondary">#341a4a</color>
 

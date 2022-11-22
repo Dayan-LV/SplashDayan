@@ -4,14 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.CalendarView
 import android.widget.NumberPicker
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mysplash.json.MyInfo
 import com.example.splashdayan.databinding.ActivityRegistroBinding
 import com.example.splashdayan.json.Metodos
+import com.example.splashdayan.json.MyData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.*
@@ -19,13 +18,16 @@ import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 class Registro : AppCompatActivity() {
 
+    companion object {
+        val archivo = "archivo.json"
+    }
+
     private lateinit var binding: ActivityRegistroBinding
     private val TAG: String = "RegisterActivity"
-    val archivo = "archivo.json"
+
     var list: List<MyInfo> = java.util.ArrayList()
     lateinit var json: String
 
@@ -34,12 +36,16 @@ class Registro : AppCompatActivity() {
     private lateinit var password: String
     private lateinit var email: String
 
+    lateinit var lista: List<MyData>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRegistroBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        lista = ArrayList<MyData>()
 
         if (ReadFile()) {
             jsonToList(json)
@@ -61,11 +67,11 @@ class Registro : AppCompatActivity() {
         if (validarCampos()) {
             Log.d("RegisterActivity", "Se han validado los campos")
 
-            if (!list.isEmpty() && usuarios(list, usuario)) {
+            if (list.isNotEmpty() && usuarios(list, usuario)) {
                 Toast.makeText(this, "El nombre de usuario está en uso", Toast.LENGTH_LONG).show()
             } else {
                 password = Metodos.bytesToHex(Metodos.createSha1(password))
-                user = MyInfo(usuario, password, email)
+                user = MyInfo(usuario, password, email, lista)
                 listToJson(user, list as MutableList<MyInfo?>)
                 Log.d( TAG,"Se ha registrado el usuario");
                 Log.d(TAG, user.usuario + "\n" + user.password + "\n" + user.email)
@@ -173,7 +179,7 @@ class Registro : AppCompatActivity() {
     }
 
     private fun getFile(): File? {
-        return File(dataDir, this.archivo)
+        return File(dataDir, archivo)
     }
 
     private fun usuarios(list: List<MyInfo>, usr: String): Boolean {
