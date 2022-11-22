@@ -6,25 +6,42 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.mysplash.json.MyInfo
 import com.example.splashdayan.databinding.ActivityLoginBinding
+import com.example.splashdayan.des.MyDesUtil
 import com.example.splashdayan.json.Metodos
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
 
+
 class Login : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+
+    //DES
+    val KEY = "+4xij6jQRSBdCymMxweza/uMYo+o0EUg"
+    private val testClaro = "Hola mundo"
+    lateinit var testDesCifrado: String
+
+    //Atributos
+    lateinit var correo: String
+    lateinit var mensaje: String
 
     companion object {
         public lateinit var list: List<MyInfo>
     }
 
-    var TAG = "LoginActivity"
+    private val TAG = "LoginActivity"
     private lateinit var json: String
     private lateinit var usuario: String
     private lateinit var password: String
@@ -48,6 +65,48 @@ class Login : AppCompatActivity() {
         binding.tvForgotPswd.setOnClickListener {
             goForgotPswd()
         }
+
+        binding.tvForgotPswd.setOnClickListener(View.OnClickListener { //DES
+            var myDesUtil: MyDesUtil
+            myDesUtil = MyDesUtil()
+            myDesUtil.addStringKeyBase64(KEY)
+            //DES
+            usuario = binding.etUsername.text.toString()
+            if (usuario == "" || usuario.isEmpty()) {
+                Toast.makeText(applicationContext, "Llena el campo de Usuario", Toast.LENGTH_LONG)
+                    .show()
+            } else {
+                var i = 0
+                for (inf in list) {
+                    if (inf.usuario == usuario) {
+                        correo = inf.email
+                        mensaje = "<html><h1>Registro para una app????</h1></html>"
+                        correo = myDesUtil.cifrar(correo)
+                        mensaje = myDesUtil.cifrar(mensaje)
+                        i = 1
+                    }
+                }
+                if (i == 1) {
+                    Log.i(
+                        TAG,
+                        usuario
+                    )
+                    Log.i(TAG, correo)
+                    Log.i(TAG, mensaje)
+                    if (sendInfo(correo, mensaje)) {
+                        Toast.makeText(baseContext, "Se envío el texto", Toast.LENGTH_LONG)
+                        return@OnClickListener
+                    }
+                    Toast.makeText(baseContext, "Error en el envío", Toast.LENGTH_LONG)
+                } else {
+                    if (i == 0) {
+                        Log.i(TAG, "no hay usuarios")
+                        Toast.makeText(baseContext, "No existen usuarios", Toast.LENGTH_LONG)
+                        return@OnClickListener
+                    }
+                }
+            }
+        })
 
 
     }
@@ -141,5 +200,29 @@ class Login : AppCompatActivity() {
                 .show()
             return
         }
+    }
+
+    fun sendInfo(correo: String?, mensaje: String?): Boolean {
+        var jsonObjectRequest: JsonObjectRequest? = null
+        var jsonObject: JSONObject? = null
+        val url = "https://us-central1-nemidesarrollo.cloudfunctions.net/function-test"
+        var requestQueue: RequestQueue? = null
+        if (correo == null || correo.length == 0) {
+            return false
+        }
+        jsonObject = JSONObject()
+        try {
+            jsonObject.put("correo", correo)
+            jsonObject.put("mensaje", mensaje)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+        jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST, url, jsonObject,
+            { response -> Log.i(TAG, response.toString()) }
+        ) { error -> Log.e(TAG, error.toString()) }
+        requestQueue = Volley.newRequestQueue(baseContext)
+        requestQueue.add(jsonObjectRequest)
+        return true
     }
 }
