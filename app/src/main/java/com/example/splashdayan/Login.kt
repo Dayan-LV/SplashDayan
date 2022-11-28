@@ -13,7 +13,6 @@ import com.android.volley.toolbox.Volley
 import com.example.mysplash.json.MyInfo
 import com.example.splashdayan.databinding.ActivityLoginBinding
 import com.example.splashdayan.des.MyDesUtil
-import com.example.splashdayan.json.Metodos
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONException
@@ -32,6 +31,7 @@ class Login : AppCompatActivity() {
     val KEY = "+4xij6jQRSBdCymMxweza/uMYo+o0EUg"
     private val testClaro = "Hola mundo"
     lateinit var testDesCifrado: String
+    var myDesUtil = MyDesUtil().addStringKeyBase64(KEY)
 
     //Atributos
     lateinit var correo: String
@@ -45,7 +45,7 @@ class Login : AppCompatActivity() {
     private lateinit var json: String
     private lateinit var usuario: String
     private lateinit var password: String
-    val archivo = "archivo.json"
+    val archivo = "file.json"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,55 +66,12 @@ class Login : AppCompatActivity() {
             goForgotPswd()
         }
 
-        binding.tvForgotPswd.setOnClickListener(View.OnClickListener { //DES
-            var myDesUtil: MyDesUtil
-            myDesUtil = MyDesUtil()
-            myDesUtil.addStringKeyBase64(KEY)
-            //DES
-            usuario = binding.etUsername.text.toString()
-            if (usuario == "" || usuario.isEmpty()) {
-                Toast.makeText(applicationContext, "Llena el campo de Usuario", Toast.LENGTH_LONG)
-                    .show()
-            } else {
-                var i = 0
-                for (inf in list) {
-                    if (inf.usuario == usuario) {
-                        correo = inf.email
-                        mensaje = "<html><h1>Registro para una app????</h1></html>"
-                        correo = myDesUtil.cifrar(correo)
-                        mensaje = myDesUtil.cifrar(mensaje)
-                        i = 1
-                    }
-                }
-                if (i == 1) {
-                    Log.i(
-                        TAG,
-                        usuario
-                    )
-                    Log.i(TAG, correo)
-                    Log.i(TAG, mensaje)
-                    if (sendInfo(correo, mensaje)) {
-                        Toast.makeText(baseContext, "Se envío el texto", Toast.LENGTH_LONG)
-                        return@OnClickListener
-                    }
-                    Toast.makeText(baseContext, "Error en el envío", Toast.LENGTH_LONG)
-                } else {
-                    if (i == 0) {
-                        Log.i(TAG, "no hay usuarios")
-                        Toast.makeText(baseContext, "No existen usuarios", Toast.LENGTH_LONG)
-                        return@OnClickListener
-                    }
-                }
-            }
-        })
-
-
     }
 
     fun signIn(v: View) {
         usuario = binding.etUsername.text.toString()
         password = binding.etPassword.text.toString()
-        password = Metodos.bytesToHex(Metodos.createSha1(password))
+        //password = Metodos.bytesToHex(Metodos.createSha1(password))
         verificar(usuario, password)
 
     }
@@ -166,6 +123,7 @@ class Login : AppCompatActivity() {
             fileInputStream = FileInputStream(file)
             fileInputStream.read(bytes)
             json = String(bytes)
+            json = myDesUtil.desCifrar(json)
             Log.d(TAG, json)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
@@ -200,29 +158,5 @@ class Login : AppCompatActivity() {
                 .show()
             return
         }
-    }
-
-    fun sendInfo(correo: String?, mensaje: String?): Boolean {
-        var jsonObjectRequest: JsonObjectRequest? = null
-        var jsonObject: JSONObject? = null
-        val url = "https://us-central1-nemidesarrollo.cloudfunctions.net/function-test"
-        var requestQueue: RequestQueue? = null
-        if (correo == null || correo.length == 0) {
-            return false
-        }
-        jsonObject = JSONObject()
-        try {
-            jsonObject.put("correo", correo)
-            jsonObject.put("mensaje", mensaje)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, jsonObject,
-            { response -> Log.i(TAG, response.toString()) }
-        ) { error -> Log.e(TAG, error.toString()) }
-        requestQueue = Volley.newRequestQueue(baseContext)
-        requestQueue.add(jsonObjectRequest)
-        return true
     }
 }

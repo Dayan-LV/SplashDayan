@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mysplash.json.MyInfo
 import com.example.splashdayan.MyAdapter.MyAdapter
+import com.example.splashdayan.des.MyDesUtil
 import com.example.splashdayan.json.MyData
 import com.google.gson.Gson
 import java.io.File
@@ -34,6 +37,9 @@ class Menu : AppCompatActivity() {
     lateinit var button: Button
     lateinit var button1:android.widget.Button
     lateinit var button2:android.widget.Button
+
+    var myDesUtil = MyDesUtil().addStringKeyBase64(Registro.KEY)
+    var bandera = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         var `object`: Any? = null
@@ -62,11 +68,23 @@ class Menu : AppCompatActivity() {
         listo = myInfo.contras as MutableList<MyData>
         val myAdapter = MyAdapter(listo, baseContext)
         listView.adapter = myAdapter
+
+        button.setEnabled(false);
+        button1.setEnabled(false);
+        if(listo.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Para agregar una contraseña de clic en el menú o en el boton +", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Escriba en los campos", Toast.LENGTH_LONG).show();
+        }
+        Toast.makeText(getApplicationContext(), "Para modificar o eliminar una contraseña de click en ella", Toast.LENGTH_LONG).show();
+
         listView.onItemClickListener =
             OnItemClickListener { adapterView, view, i, l ->
                 editText.setText(listo[i].usuario)
                 editText1.setText(listo[i].contra)
                 pos = i
+                button.setEnabled(true);
+                button1.setEnabled(true);
+                Toast.makeText(getApplicationContext(), "Para guardar los cambios de click en guardar cambios", Toast.LENGTH_LONG).show();
             }
         button.setOnClickListener {
             listo.removeAt(pos)
@@ -76,19 +94,26 @@ class Menu : AppCompatActivity() {
             editText.setText("")
             editText1.setText("")
             Toast.makeText(applicationContext, "Se eliminó la contraseña", Toast.LENGTH_LONG).show()
+            button.setEnabled(false);
+            button1.setEnabled(false);
         }
         button1.setOnClickListener {
             val usr = editText.text.toString()
             val contra = editText1.text.toString()
-            listo[pos].usuario = usr
-            listo[pos].contra = contra
-            myInfo.contras = listo
-            val myAdapter = MyAdapter(listo, baseContext)
-            listView.adapter = myAdapter
-            editText.setText("")
-            editText1.setText("")
-            Toast.makeText(applicationContext, "Se modificó la contraseña", Toast.LENGTH_LONG)
-                .show()
+            if(usr == "" || contra == ""){
+                Toast.makeText(applicationContext, "Llene los campos", Toast.LENGTH_LONG).show();
+            }else{
+                listo.get(pos).usuario = usr
+                listo.get(pos).contra = contra
+                myInfo.contras = listo
+                var myAdapter = MyAdapter(listo, baseContext)
+                listView.adapter = myAdapter;
+                editText.setText("");
+                editText1.setText("");
+                Toast.makeText(applicationContext, "Se modificó la contraseña", Toast.LENGTH_LONG).show();
+                button.isEnabled = false;
+                button1.isEnabled = false;
+            }
         }
         button2.setOnClickListener {
             val usr = editText.text.toString()

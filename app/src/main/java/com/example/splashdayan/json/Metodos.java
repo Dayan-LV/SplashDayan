@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Metodos {
-    public static final String TAG = "Methods";
+    /*public static final String TAG = "Methods";
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
     public static byte[] createSha1( String text )
     {
@@ -40,5 +40,5 @@ public class Metodos {
         }
         return new String(hexChars);
     }
-
+*/
 }

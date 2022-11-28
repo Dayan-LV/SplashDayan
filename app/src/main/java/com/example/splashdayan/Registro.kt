@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mysplash.json.MyInfo
 import com.example.splashdayan.databinding.ActivityRegistroBinding
-import com.example.splashdayan.json.Metodos
+import com.example.splashdayan.des.MyDesUtil
 import com.example.splashdayan.json.MyData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -19,10 +19,13 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+
 class Registro : AppCompatActivity() {
 
     companion object {
-        val archivo = "archivo.json"
+        val archivo = "file.json"
+        val KEY = "+4xij6jQRSBdCymMxweza/uMYo+o0EUg"
+        var myDesUtil = MyDesUtil().addStringKeyBase64(KEY)
     }
 
     private lateinit var binding: ActivityRegistroBinding
@@ -70,7 +73,7 @@ class Registro : AppCompatActivity() {
             if (list.isNotEmpty() && usuarios(list, usuario)) {
                 Toast.makeText(this, "El nombre de usuario está en uso", Toast.LENGTH_LONG).show()
             } else {
-                password = Metodos.bytesToHex(Metodos.createSha1(password))
+                //password = Metodos.bytesToHex(Metodos.createSha1(password))
                 user = MyInfo(usuario, password, email, lista)
                 listToJson(user, list as MutableList<MyInfo?>)
                 Log.d( TAG,"Se ha registrado el usuario");
@@ -145,30 +148,32 @@ class Registro : AppCompatActivity() {
         }
     }
 
-    private fun listToJson(info: MyInfo?, list: MutableList<MyInfo?>) {
+    fun listToJson(info: MyInfo?, list: MutableList<MyInfo?>) {
         var gson: Gson? = null
         var json: String? = null
         gson = Gson()
         list.add(info)
         json = gson.toJson(list, ArrayList::class.java)
         if (json == null) {
-            Log.d(this.TAG, "Error json")
+            Log.d(TAG, "Error json")
         } else {
-            Log.d(this.TAG, json)
+            Log.d(TAG, json)
+            json = myDesUtil.cifrar(json)
+            Log.d(TAG, json)
             writeFile(json)
         }
-        Toast.makeText(applicationContext, "Se ha registrado correctamente", Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "Ok", Toast.LENGTH_LONG).show()
     }
 
-    private fun writeFile(text: String): Boolean {
+    private fun writeFile(text: String?): Boolean {
         var file: File? = null
         var fileOutputStream: FileOutputStream? = null
         try {
             file = getFile()
             fileOutputStream = FileOutputStream(file)
-            fileOutputStream.write(text.toByteArray(StandardCharsets.UTF_8))
+            fileOutputStream.write(text!!.toByteArray(StandardCharsets.UTF_8))
             fileOutputStream.close()
-            Log.d(this.TAG, "Hola")
+            Log.d(TAG, "Hola")
             return true
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
@@ -226,9 +231,9 @@ class Registro : AppCompatActivity() {
             return
         }
         gson = Gson()
-        val listType = object : TypeToken<java.util.ArrayList<MyInfo?>?>() {}.type
-        this.list = gson.fromJson<List<MyInfo>>(json, listType)
-        if (this.list == null || this.list.size == 0) {
+        val listType = object : TypeToken<ArrayList<MyInfo?>?>() {}.type
+        list = gson.fromJson<List<MyInfo>>(json, listType)
+        if (list == null || list.size == 0) {
             Toast.makeText(applicationContext, "Error list is null or empty", Toast.LENGTH_LONG)
                 .show()
             return
