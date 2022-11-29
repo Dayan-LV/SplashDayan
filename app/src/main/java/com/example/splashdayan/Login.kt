@@ -45,7 +45,7 @@ class Login : AppCompatActivity() {
     private lateinit var json: String
     private lateinit var usuario: String
     private lateinit var password: String
-    val archivo = "file.json"
+    val archivo = "fila.json"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,6 +129,14 @@ class Login : AppCompatActivity() {
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
         }
         return true
     }

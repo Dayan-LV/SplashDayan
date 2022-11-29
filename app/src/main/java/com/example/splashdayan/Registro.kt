@@ -23,7 +23,7 @@ import java.util.regex.Pattern
 class Registro : AppCompatActivity() {
 
     companion object {
-        val archivo = "file.json"
+        val archivo = "fila.json"
         val KEY = "+4xij6jQRSBdCymMxweza/uMYo+o0EUg"
         var myDesUtil = MyDesUtil().addStringKeyBase64(KEY)
     }
@@ -209,11 +209,18 @@ class Registro : AppCompatActivity() {
             fileInputStream = FileInputStream(file)
             fileInputStream.read(bytes)
             json = String(bytes)
+            json = myDesUtil.desCifrar(json)
             Log.d(TAG, json)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
+        } finally {
+            try {
+                fileInputStream!!.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
         return true
     }

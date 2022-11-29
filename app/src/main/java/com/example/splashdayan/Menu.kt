@@ -39,7 +39,6 @@ class Menu : AppCompatActivity() {
     lateinit var button2:android.widget.Button
 
     var myDesUtil = MyDesUtil().addStringKeyBase64(Registro.KEY)
-    var bandera = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         var `object`: Any? = null
@@ -192,7 +191,7 @@ class Menu : AppCompatActivity() {
             Log.d(TAG, "Error json")
         } else {
             Log.d(TAG, json)
-            writeFile(json)
+            writeFile(myDesUtil.cifrar(json))
         }
         Toast.makeText(applicationContext, "Ok", Toast.LENGTH_LONG).show()
     }
