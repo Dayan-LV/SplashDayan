@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Registro"
+    android:background="@drawable/bg_login_gradient">
+
+    <LinearLayout
+        android:id="@+id/lyInputs"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="@string/register_text"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold|italic"
+            android:layout_marginBottom="30dp"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="60dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/white_alpha"
+                    android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/white_alpha"
+                    android:hint="@string/email_text"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white_alpha" />
+
+                <EditText
+                    android:id="@+id/etUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/white_alpha"
+                    android:drawableStart="@drawable/ic_user"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/white_alpha"
+                    android:hint="@string/username_text"
+                    android:inputType="text"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white_alpha" />
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white_alpha"
+                    android:drawableStart="@drawable/ic_password"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/white_alpha"
+                    android:hint="@string/password_text"
+                    android:inputType="textPassword"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white_alpha" />
+
+                <RadioGroup
+                    android:id="@+id/rgGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/rbMasculino"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Masculino"
+                        android:checked="true"
+                        android:textColor="@color/white_alpha"
+                        android:buttonTint="@color/white_alpha"
+                        android:layout_weight="1"/>
+
+                    <RadioButton
+                        android:id="@+id/rbFemenino"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Femenino"
+                        android:textColor="@color/white_alpha"
+                        android:buttonTint="@color/white_alpha"
+                        android:layout_weight="1"/>
+
+                </RadioGroup>
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:backgroundTint="@color/white"
+                    android:background="?android:attr/listDivider"
+                    android:layout_marginBottom="15dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ingresa fecha de nacimiento:"
+                    android:textColor="@color/white_alpha"
+                    android:textSize="20dp"
+                    android:textStyle="italic"/>
+
+                <CalendarView
+                    android:id="@+id/cvEjemplo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvFecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha seleccionada: "
+                    android:textColor="@color/white_alpha"
+                    android:textSize="17dp"
+                    android:textStyle="italic"/>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:backgroundTint="@color/white"
+                    android:background="?android:attr/listDivider"
+                    android:layout_marginBottom="30dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ingresa tu peso:"
+                    android:textColor="@color/white_alpha"
+                    android:textSize="20dp"
+                    android:textStyle="italic"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <NumberPicker
+                        android:id="@+id/np1Ejemplo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="130dp"
+                        android:theme="@style/NumberPickerTheme"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"/>
+
+                    <NumberPicker
+                        android:id="@+id/np2Ejemplo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="130dp"
+                        android:theme="@style/NumberPickerTheme"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="10dp"/>
+
+                    <NumberPicker
+                        android:id="@+id/np3Ejemplo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="130dp"
+                        android:theme="@style/NumberPickerTheme"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="10dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:backgroundTint="@color/white"
+                    android:background="?android:attr/listDivider"
+                    android:layout_marginBottom="30dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Generos favoritos:"
+                    android:textColor="@color/white_alpha"
+                    android:textSize="20dp"
+                    android:textStyle="italic"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <CheckBox
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rock"
+                        android:textColor="@color/white_alpha"/>
+
+                    <CheckBox
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Electronica"
+                        android:textColor="@color/white_alpha"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <CheckBox
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rap"
+                        android:textColor="@color/white_alpha"/>
+
+                    <CheckBox
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pop"
+                        android:textColor="@color/white_alpha"/>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:backgroundTint="@color/white"
+                    android:background="?android:attr/listDivider"
+                    android:layout_marginBottom="30dp"/>
+
+                <!--<TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Califícanos:"
+                    android:textColor="@color/white_alpha"
+                    android:textSize="20dp"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="15dp"/>
+
+                <RatingBar
+                    android:id="@+id/rbEjemplo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:rating="3.5"
+                    style="@android:style/Widget.Holo.Light.RatingBar"
+                    android:isIndicator="false"
+                    android:stepSize="0.5"
+                    android:progressTint="@color/secondary_color"/>
+-->
+                <Switch
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Notificaciones"
+                    android:textColor="@color/white_alpha"
+                    android:thumb="@drawable/ic_baseline_notifications_24"
+                    android:thumbTint="@color/white_alpha"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/have_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/have_an_account"
+            android:textColor="@color/white"
+            android:layout_marginBottom="5dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRegister"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up_text"
+            android:background="@drawable/button_bg"
+            android:onClick="signUp"
+            />
+
+    </LinearLayout>
+
+</ScrollView>
